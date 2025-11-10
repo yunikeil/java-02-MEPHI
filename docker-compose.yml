@@ -1,0 +1,30 @@
+version: "3.9"
+
+# В итоге скипнул добавление базы, посчитал избыточным
+services:
+  app:
+    build: .
+    container_name: url-shortener-app
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - db
+
+  redis:
+    image: redis:alpine
+    container_name: url-shortener-redis
+    ports:
+      - "6379:6379"
+
+  db:
+    image: postgres:alpine
+    container_name: url-shortener-postgres
+    environment:
+      POSTGRES_DB: shortener
+      POSTGRES_USER: shortener
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
