@@ -2,6 +2,10 @@ plugins {
     id("java")
     id("org.springframework.boot") version "3.3.0"
     id("io.spring.dependency-management") version "1.1.5"
+
+    jacoco
+    checkstyle
+    id("com.diffplug.spotless") version "6.25.0"
 }
 
 group = "org.example"
@@ -27,6 +31,56 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
-tasks.withType<Test> {
+spotless {
+    java {
+        target("src/**/*.java")
+
+        // автоформат по Google Java Style
+        googleJavaFormat("1.17.0")
+
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+checkstyle {
+    toolVersion = "10.17.0"
+    configDirectory.set(file("config/checkstyle"))
+}
+
+tasks.withType<Checkstyle> {
+    isIgnoreFailures = false
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
+tasks.test {
     useJUnitPlatform()
+
+    testLogging {
+        events(
+            org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+        )
+        showStandardStreams = false
+    }
+
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.required.set(true)        // build/reports/jacoco/test/html/index.html
+    }
+}
+
+tasks.check {
+    dependsOn("spotlessCheck")
 }
