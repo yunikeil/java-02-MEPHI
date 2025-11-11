@@ -1,6 +1,4 @@
-
-
-
+[![Java CI](https://github.com/yunikeil/java-02-MEPHI/actions/workflows/ci.yaml/badge.svg)](https://github.com/yunikeil/java-02-MEPHI/actions/workflows/ci.yaml) [![Coverage Pages](https://github.com/yunikeil/java-02-MEPHI/actions/workflows/coverage-pages.yaml/badge.svg)](https://github.com/yunikeil/java-02-MEPHI/actions/workflows/coverage-pages.yaml)
 
 1. docker compose up --build
 2. open http://localhost:8080
