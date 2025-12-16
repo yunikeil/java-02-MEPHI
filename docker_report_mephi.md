@@ -59,6 +59,11 @@ public class Main {
 
 ## 4. Dockerfile
 
+Собираем приложение в отдельном контейнере с Gradle и JDK.
+В результате получаем исполняемый JAR.
+Далее берём лёгкий контейнер только с Java Runtime, копируем туда JAR.
+При запуске контейнера стартует Java-приложение на порту 8080.
+
 ```dockerfile
 FROM gradle:8.7-jdk17 AS build
 
@@ -97,7 +102,7 @@ docker compose up --build
 ## 7. ID запущенного контейнера
 
 ```
-e3f1a2b4c9d8f0a123456789abcdef12
+66618d06bfa0
 ```
 
 ---
@@ -111,8 +116,11 @@ docker ps
 Пример вывода:
 
 ```
-CONTAINER ID   IMAGE             COMMAND                  STATUS          PORTS                    NAMES
-e3f1a2b4c9d8   java-mephi-app    "java -jar /app…"        Up 2 minutes    0.0.0.0:8080->8080/tcp   java-mephi-container
+% docker ps
+CONTAINER ID   IMAGE               COMMAND                  CREATED              STATUS              PORTS                                         NAMES
+66618d06bfa0   java-02-mephi-app   "java -jar /app/app.…"   About a minute ago   Up About a minute   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp   url-shortener-app
+7d373ed6d024   postgres:alpine     "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp   url-shortener-postgres
+df886bf9b07a   redis:alpine        "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:6379->6379/tcp, [::]:6379->6379/tcp   url-shortener-redis
 ```
 
 ---
