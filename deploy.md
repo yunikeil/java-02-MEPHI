@@ -77,15 +77,16 @@ jobs:
 Триггеры: workflow запускается при push или pull request в ветки main и master, а также может быть запущен вручную через workflow_dispatch.
 
 Джобы:
-    * build:
-        * Запускается на Ubuntu.
-        * Используются Actions: actions/checkout для клонирования репозитория, actions/setup-java для установки JDK 17 с кэшированием Gradle.
-        * Делается Gradle clean, сборка, запуск тестов и генерация отчета jacocoTestReport.
-        * Отчет обрабатывается с помощью actions/upload-pages-artifact для последующего деплоя.
-    * deploy:
-        * Запускается после успешного завершения джобы build (зависимость через needs: build).
-        * Используется actions/deploy-pages для деплоя артефактов.
-        * Выполняется на Ubuntu и использует environment github-pages.
+
+1. build:
+    * Запускается на Ubuntu.
+    * Используются Actions: actions/checkout для клонирования репозитория, actions/setup-java для установки JDK 17 с кэшированием Gradle.
+    * Делается Gradle clean, сборка, запуск тестов и генерация отчета jacocoTestReport.
+    * Отчет обрабатывается с помощью actions/upload-pages-artifact для последующего деплоя.
+2. deploy:
+    * Запускается после успешного завершения джобы build (зависимость через needs: build).
+    * Используется actions/deploy-pages для деплоя артефактов.
+    * Выполняется на Ubuntu и использует environment github-pages.
  
 
 # ссылка на открытый репозиторий, где настроен pipeline.
@@ -93,3 +94,5 @@ jobs:
 Репозиторий: https://github.com/yunikeil/java-02-MEPHI
 
 Сайт куда деплоится отчёт автотестов: https://yunikeil.ru/java-02-MEPHI/
+
+Статус деплоя + ссылка: [![Deploy coverage](https://github.com/yunikeil/java-02-MEPHI/actions/workflows/coverage-pages.yaml/badge.svg)](https://github.com/yunikeil/java-02-MEPHI/actions/workflows/coverage-pages.yaml) [![Coverage report link](https://img.shields.io/badge/coverage-report-blue)](https://yunikeil.ru/java-02-MEPHI/) 
